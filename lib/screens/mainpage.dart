@@ -162,9 +162,9 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
             ),
             ListTile(
               //free rides
-              leading: Icon(Icons.card_giftcard),
+              leading: Icon(Icons.location_history),
               title: Text(
-                'Your Rides',
+                'Your line',
                 style: TextStyle(fontSize: 16),
               ),
               onTap: () {},
@@ -216,7 +216,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
       body: Stack(
         children: [
           GoogleMap(
-            padding: EdgeInsets.only(bottom: mapBottomPadding),
+            padding: EdgeInsets.fromLTRB(0, 60, 0, 200),
             mapType: MapType.normal,
             myLocationButtonEnabled: true,
             initialCameraPosition: _kLake,
@@ -383,23 +383,16 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'Taxi',
+                                'Your Bus',
                                 style: TextStyle(
-                                    fontSize: 18, fontFamily: 'Brand-Bold'),
+                                    fontSize: 20, fontFamily: 'Brand-Bold'),
                               ),
-                              Text(
-                                  (tripDriectionDetails != null)
-                                      ? tripDriectionDetails.distanceText
-                                      : '',
-                                  style: TextStyle(
-                                      fontSize: 14,
-                                      color: BrandColors.colorTextLight)),
                             ],
                           ),
                           Expanded(child: Container()),
                           Text(
                             (tripDriectionDetails != null)
-                                ? '\$${HelperMethod.estimateFares(tripDriectionDetails)}'
+                                ? tripDriectionDetails.distanceText
                                 : '',
                             style: TextStyle(
                                 fontSize: 18, fontFamily: 'Brand-Bold'),
@@ -410,38 +403,38 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                     SizedBox(
                       height: 30,
                     ),
-                    Container(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-                      child: Row(
-                        children: [
-                          Icon(
-                            FontAwesomeIcons.moneyBillAlt,
-                            size: 18,
-                            color: BrandColors.colorTextLight,
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Text('Cash'),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Icon(
-                            Icons.keyboard_arrow_down,
-                            color: BrandColors.colorTextLight,
-                            size: 16,
-                          ),
-                        ],
-                      ),
-                    ),
+                    // Container(
+                    //   padding:
+                    //       EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                    //   child: Row(
+                    //     children: [
+                    //       Icon(
+                    //         FontAwesomeIcons.moneyBillAlt,
+                    //         size: 18,
+                    //         color: BrandColors.colorTextLight,
+                    //       ),
+                    //       SizedBox(
+                    //         width: 10,
+                    //       ),
+                    //       Text('Cash'),
+                    //       SizedBox(
+                    //         width: 10,
+                    //       ),
+                    //       Icon(
+                    //         Icons.keyboard_arrow_down,
+                    //         color: BrandColors.colorTextLight,
+                    //         size: 16,
+                    //       ),
+                    //     ],
+                    //   ),
+                    // ),
                     SizedBox(
                       height: 30,
                     ),
                     Container(
                       padding: EdgeInsets.symmetric(horizontal: 16),
                       child: TaxiButton(
-                        text: 'REQUEST CAP',
+                        text: 'REQUEST BUS',
                         color: Colors.yellow[700],
                         onPressed: () {
                           showRequestingSheet();
