@@ -157,7 +157,21 @@ class _LoginPageState extends State<LoginPage> {
                         },
                         child: Text(
                           'Don\'t have an account? Sign up',
-                          style: TextStyle(fontSize: 12.0),
+                          style: TextStyle(
+                            fontSize: 12.0,
+                            decoration: TextDecoration.underline,
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 15),
+                      FlatButton(
+                        onPressed: () {},
+                        child: Text(
+                          'Forgot my password',
+                          style: TextStyle(
+                            fontSize: 12.0,
+                            decoration: TextDecoration.underline,
+                          ),
                         ),
                       )
                     ],
@@ -165,7 +179,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
             ),
-            SizedBox(height: 115.0),
+            SizedBox(height: 60.0),
             ClipPath(
               clipper: WaveClipperTwo(flip: true, reverse: true),
               child: Container(

@@ -62,22 +62,14 @@ class PredictionTile extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        (prediction.mainText == null)
-                            ? ''
-                            : prediction.mainText,
-                        style: TextStyle(fontSize: 16),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      Text(
-                        (prediction.secondaryText == null)
-                            ? ''
-                            : prediction.secondaryText,
-                        style: TextStyle(fontSize: 12, color: Colors.grey[600]),
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 1,
-                      ),
+                      Text("Confirm pick up"
+                          //   (prediction.mainText != null)
+                          //       ? 'confirm Pickup'
+                          //       : prediction.mainText,
+                          //   style: TextStyle(fontSize: 16),
+                          //   maxLines: 1,
+                          //   overflow: TextOverflow.ellipsis,
+                          ),
                     ],
                   ),
                 )

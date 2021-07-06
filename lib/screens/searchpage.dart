@@ -4,6 +4,7 @@ import 'package:uber/dataprovider/appdata.dart';
 import 'package:provider/provider.dart';
 import 'package:uber/helpers/requesthelper.dart';
 import 'package:uber/widgets/predictiontile.dart';
+import 'package:uber/widgets/progressDialog.dart';
 
 class SearchPage extends StatefulWidget {
   @override
@@ -12,7 +13,7 @@ class SearchPage extends StatefulWidget {
 
 class _SearchPageState extends State<SearchPage> {
   var pickupController = TextEditingController();
-  var destinationController = TextEditingController();
+  var destinationController = TextEditingController(text: 'el-shrouk academy');
   var foucsDest = FocusNode();
   bool focused = false;
 
@@ -48,10 +49,13 @@ class _SearchPageState extends State<SearchPage> {
 
   @override
   Widget build(BuildContext context) {
-    setFocus();
+    // setFocus();
     String address =
         Provider.of<AppData>(context).pickupAddress.placeName ?? '';
     pickupController.text = address;
+    // String addressTo =
+    //     Provider.of<AppData>(context).destinationAddress.placeName =;
+    // destinationController.text = addressTo;
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -83,7 +87,7 @@ class _SearchPageState extends State<SearchPage> {
                               child: Icon(Icons.arrow_back)),
                           Center(
                             child: Text(
-                              'Set Destination',
+                              'Confirm Pickup',
                               style: TextStyle(
                                   fontSize: 20, fontFamily: 'Brand-Bold'),
                             ),
@@ -130,12 +134,12 @@ class _SearchPageState extends State<SearchPage> {
                           Expanded(
                               child: TextField(
                             onChanged: (value) {
-                              searchPlace(value);
+                              searchPlace(value = 'El-shrouk academy');
                             },
                             focusNode: foucsDest,
                             controller: destinationController,
                             decoration: InputDecoration(
-                              hintText: 'Where To ?',
+                              hintText: 'El-shrouk academy',
                               fillColor: Colors.grey[200],
                               filled: true,
                             ),
@@ -162,12 +166,12 @@ class _SearchPageState extends State<SearchPage> {
                       color: Color(0xFFe2e2e2),
                       thickness: 1.0,
                     ),
-                    itemCount: destinationPredictionList.length,
+                    itemCount: 1,
                     shrinkWrap: true,
                   )
                 : Container(
                     child: Text(''),
-                  ),
+                  )
           ],
         ),
       ),

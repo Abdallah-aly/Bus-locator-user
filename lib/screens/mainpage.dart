@@ -1,4 +1,5 @@
 // import 'package:firebase_database/firebase_database.dart';
+import 'package:connectivity/connectivity.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -18,12 +19,14 @@ import 'package:uber/dataprovider/appdata.dart';
 import 'package:uber/globalVars.dart';
 import 'package:uber/helpers/firehelper.dart';
 import 'package:uber/helpers/helpermethods.dart';
+import 'package:uber/screens/aboutus.dart';
 import 'package:uber/screens/loginpage.dart';
 import 'package:uber/screens/registrationpage.dart';
 import 'package:uber/screens/searchpage.dart';
 import 'package:uber/widgets/progressDialog.dart';
 import 'package:uber/widgets/taxibutton.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
+import 'package:uber/widgets/NoDriverDialog.dart';
 
 class MainPage extends StatefulWidget {
   static const String id = 'mainpage';
@@ -50,6 +53,8 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
   var geolocator = Geolocator();
   Position currentPosition;
 
+  List<NearbyDriver> availableDrivers;
+
   DirectionDetails tripDriectionDetails;
 
   DatabaseReference rideRef;
@@ -66,6 +71,16 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
     String address = await HelperMethod.findCordinateAddress(position, context);
     print(address);
     startGeoFireListenr();
+  }
+
+  void showSnackBar(String title) {
+    final snackbar = SnackBar(
+        content: Text(
+      title,
+      textAlign: TextAlign.center,
+      style: TextStyle(fontSize: 15.0),
+    ));
+    scaffoldKey.currentState.showSnackBar(snackbar);
   }
 
   bool drawerCanOpen = true;
@@ -160,20 +175,20 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
             SizedBox(
               height: 10,
             ),
-            ListTile(
-              //free rides
-              leading: Icon(Icons.location_history),
-              title: Text(
-                'Your line',
-                style: TextStyle(fontSize: 16),
-              ),
-              onTap: () {},
-            ),
-            Divider(
-              height: 1.0,
-              color: Color(0xFFe2e2e2),
-              thickness: 1.0,
-            ),
+            // ListTile(
+            //   //free rides
+            //   leading: Icon(Icons.location_history),
+            //   title: Text(
+            //     'Your line',
+            //     style: TextStyle(fontSize: 16),
+            //   ),
+            //   onTap: () {},
+            // ),
+            // Divider(
+            //   height: 1.0,
+            //   color: Color(0xFFe2e2e2),
+            //   thickness: 1.0,
+            // ),
             ListTile(
               //support
               leading: Icon(Icons.contact_support_outlined),
@@ -181,7 +196,9 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                 'About us',
                 style: TextStyle(fontSize: 16),
               ),
-              onTap: () {},
+              onTap: () {
+                Navigator.popAndPushNamed(context, AboutUs.id);
+              },
             ),
             Divider(
               height: 1.0,
@@ -201,7 +218,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                     context, LoginPage.id, (route) => false);
               },
             ),
-            SizedBox(height: 160.0),
+            SizedBox(height: 250.0),
             ClipPath(
               clipper: WaveClipperTwo(flip: true, reverse: true),
               child: Container(
@@ -318,6 +335,15 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                             text: "Get Your bus",
                             color: Colors.yellow[700],
                             onPressed: () async {
+                              var connectivityResult =
+                                  await (Connectivity().checkConnectivity());
+                              if (connectivityResult !=
+                                      ConnectivityResult.mobile &&
+                                  connectivityResult !=
+                                      ConnectivityResult.wifi) {
+                                showSnackBar('You are Offline');
+                                return;
+                              }
                               var response = await Navigator.push(
                                   context,
                                   MaterialPageRoute(
@@ -366,8 +392,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                 child: Column(
                   children: [
                     Container(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                      padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
                       color: Colors.yellow[400],
                       child: Row(
                         children: [
@@ -383,26 +408,78 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'Your Bus',
+                                'Driver Name',
                                 style: TextStyle(
-                                    fontSize: 20, fontFamily: 'Brand-Bold'),
+                                    fontSize: 16, fontFamily: 'Brand-Bold'),
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Text(
+                                'Car number',
+                                style: TextStyle(
+                                    fontSize: 16, fontFamily: 'Brand-Bold'),
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Text(
+                                'Your Distance',
+                                style: TextStyle(
+                                    fontSize: 16, fontFamily: 'Brand-Bold'),
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Text(
+                                'Estimated time',
+                                style: TextStyle(
+                                    fontSize: 16, fontFamily: 'Brand-Bold'),
                               ),
                             ],
                           ),
                           Expanded(child: Container()),
-                          Text(
-                            (tripDriectionDetails != null)
-                                ? tripDriectionDetails.distanceText
-                                : '',
-                            style: TextStyle(
-                                fontSize: 18, fontFamily: 'Brand-Bold'),
+                          Column(
+                            children: [
+                              Text(
+                                'Ahmed mohamed',
+                                style: TextStyle(
+                                    fontSize: 16, fontFamily: 'Brand-Bold'),
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Text(
+                                'س ل ص 2 1 5',
+                                style: TextStyle(
+                                    fontSize: 16, fontFamily: 'Brand-Bold'),
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Text(
+                                (tripDriectionDetails != null)
+                                    ? tripDriectionDetails.distanceText
+                                    : '',
+                                style: TextStyle(
+                                    fontSize: 18, fontFamily: 'Brand-Bold'),
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Text(
+                                (tripDriectionDetails != null)
+                                    ? "About ${tripDriectionDetails.durationText}"
+                                    : '',
+                                style: TextStyle(
+                                    fontSize: 16, fontFamily: 'Brand-Bold'),
+                              ),
+                            ],
                           ),
                         ],
                       ),
                     ),
-                    SizedBox(
-                      height: 30,
-                    ),
+
                     // Container(
                     //   padding:
                     //       EdgeInsets.symmetric(horizontal: 20, vertical: 5),
@@ -438,6 +515,9 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                         color: Colors.yellow[700],
                         onPressed: () {
                           showRequestingSheet();
+
+                          availableDrivers = FireHelper.nearbyDriverList;
+                          findDriver();
                         },
                       ),
                     )
@@ -479,9 +559,9 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                     padding: EdgeInsets.symmetric(horizontal: 24, vertical: 18),
                     child: Column(
                       children: [
-                        SizedBox(
-                          height: 10,
-                        ),
+                        // SizedBox(
+                        //   height: 10,
+                        // ),
                         Text(
                           'Requesting a Ride...',
                           style: TextStyle(
@@ -539,7 +619,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
         Provider.of<AppData>(context, listen: false).destinationAddress;
 
     var pickLatLng = LatLng(pickup.latitude, pickup.longitude);
-    var destinationLatLng = LatLng(destination.latitude, destination.longitude);
+    var destinationLatLng = LatLng(30.119493, 31.605977);
 
     showDialog(
         barrierDismissible: false,
@@ -758,6 +838,43 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
       drawerCanOpen = true;
 
       setupPositionLocator();
+    });
+  }
+
+  void noDriverFound() {
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) => NoDriverDialog());
+  }
+
+  void findDriver() {
+    if (availableDrivers.length == 0) {
+      cancelRequest();
+      resetApp();
+      noDriverFound();
+      return;
+    }
+    var driver = availableDrivers[0];
+    notifyDriver(driver);
+    print("the key : " + driver.key);
+  }
+
+  void notifyDriver(NearbyDriver driver) {
+    DatabaseReference driverTripRef = FirebaseDatabase.instance
+        .reference()
+        .child('drivers/${driver.key}/newtrip');
+    driverTripRef.set(rideRef.key);
+
+    DatabaseReference tokenRef = FirebaseDatabase.instance
+        .reference()
+        .child('drivers/${driver.key}/token');
+    tokenRef.once().then((DataSnapshot snapshot) {
+      if (snapshot.value != null) {
+        String token = snapshot.value.toString();
+
+        HelperMethod.sentNotification(token, context, rideRef.key);
+      }
     });
   }
 }

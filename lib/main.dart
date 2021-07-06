@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:uber/dataprovider/appdata.dart';
 import 'package:uber/globalVars.dart';
+import 'package:uber/screens/aboutus.dart';
 import 'package:uber/screens/loginpage.dart';
 import 'package:uber/screens/registrationpage.dart';
 import 'screens/mainpage.dart';
@@ -46,6 +47,7 @@ class MyApp extends StatelessWidget {
           RegistrationPage.id: (context) => RegistrationPage(),
           LoginPage.id: (context) => LoginPage(),
           MainPage.id: (context) => MainPage(),
+          AboutUs.id: (context) => AboutUs(),
         },
       ),
     );
