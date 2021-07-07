@@ -238,8 +238,8 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
             myLocationButtonEnabled: true,
             initialCameraPosition: _kLake,
             myLocationEnabled: true,
-            zoomGesturesEnabled: true,
-            zoomControlsEnabled: true,
+            zoomGesturesEnabled: false,
+            zoomControlsEnabled: false,
             polylines: _polyline,
             markers: _marker,
             circles: _circle,
@@ -563,7 +563,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                         //   height: 10,
                         // ),
                         Text(
-                          'Requesting a Ride...',
+                          'Requesting The bus...',
                           style: TextStyle(
                             color: BrandColors.colorText,
                             fontSize: 22.0,
